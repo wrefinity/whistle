@@ -22,20 +22,6 @@ const connect = mongoose.connect(process.env.MONGO_URL, {
   useUnifiedTopology: true,
 })
 
-connect
-  .then((db) => console.log("Connected to DB"))
-  .catch((err) => console.log(err))
-
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-
-// calling the middlewares
-app.use(express.json());
-app.use(helmet());
-app.use(morgan("common"));
-app.use(cors());
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images");
@@ -46,6 +32,22 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+connect
+  .then((db) => console.log("Connected to DB"))
+  .catch((err) => console.log(err))
+
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+app.use("/images", express.static("public/images"));
+// app.use("/images", express.static(path.join(__dirname, "public/images")));
+
+// calling the middlewares
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("common"));
+app.use(cors());
+
 app.post("/api/upload", upload.single("file"), (req, res) => {
   try {
     return res.status(200).json("File uploaded successfully");

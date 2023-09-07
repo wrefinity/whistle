@@ -12,6 +12,7 @@ class PostController {
       res.status(500).json(err)
     }
   }
+
   updatePost = async (req, res) => {
     try {
       const post = await Post.findById(req.params.id)
@@ -25,6 +26,7 @@ class PostController {
       res.status(500).json(err)
     }
   }
+
   deletePost = async (req, res) => {
     try {
       const post = await Post.findById(req.params.id)
@@ -38,6 +40,7 @@ class PostController {
       res.status(500).json(err)
     }
   }
+
   likePost = async (req, res) => {
     try {
       const post = await Post.findById(req.params.id)

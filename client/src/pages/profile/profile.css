@@ -48,3 +48,6 @@
 .profileRightBottom{
     display: flex;
 }
+.p{
+    padding: 0.5rem
+}

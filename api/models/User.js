@@ -10,6 +10,10 @@ const UserSchema = new Schema(
       max: 20,
       unique: true,
     },
+    coverPicture: {
+      type: String,
+      default: ""
+    },
     email: {
       type: String,
       required: true,

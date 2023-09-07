@@ -1,12 +1,21 @@
 import "./topbar.css";
-import { Search, Person, Chat, Notifications } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Search, Person, Chat, Notifications, Logout } from "@mui/icons-material";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Topbar() {
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const navigate = useNavigate()
+
+  const logout = () => {
+    dispatch({})
+    localStorage.removeItem("user")
+    window.location.reload()
+    navigate("/login")
+  }
+
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -41,13 +50,16 @@ export default function Topbar() {
             <Notifications />
             <span className="topbarIconBadge">1</span>
           </div>
+          <div className="topbarIconItem" onClick={() => logout()}>
+            <Logout color="warning" />
+          </div>
         </div>
         <Link to={`/profile/${user.username}`}>
           <img
             src={
               user.profilePicture
-                ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
+                ? `${PF}/${user.profilePicture}`
+                : PF + "/person/noAvatar.png"
             }
             alt=""
             className="topbarImg"

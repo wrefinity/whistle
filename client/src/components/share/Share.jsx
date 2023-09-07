@@ -6,12 +6,13 @@ import {
   EmojiEmotions,
   Cancel,
 } from "@mui/icons-material";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
+import axiosInstance from "../../axiosBase";
 
 export default function Share() {
-  const { user } = useContext(AuthContext);
+  const { user: currentUser } = useContext(AuthContext);
+  const [user, setUser] = useState()
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
   const [file, setFile] = useState(null);
@@ -28,16 +29,23 @@ export default function Share() {
       data.append("name", fileName);
       data.append("file", file);
       newPost.img = fileName;
-      console.log(newPost);
       try {
-        await axios.post("/upload", data);
+        await axiosInstance.post("/api/upload", data);
       } catch (err) {}
     }
     try {
-      await axios.post("/posts", newPost);
+      await axiosInstance.post("/api/posts", newPost);
       window.location.reload();
     } catch (err) {}
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const res = await axiosInstance.get(`/api/users?username=${currentUser.username}`);
+      setUser(res.data);
+    };
+    fetchUser();
+  }, []);
 
   return (
     <div className="share">
@@ -46,14 +54,14 @@ export default function Share() {
           <img
             className="shareProfileImg"
             src={
-              user.profilePicture
-                ? PF + user.profilePicture
-                : PF + "person/noAvatar.png"
+              user?.profilePicture
+                ?`${ PF }/${user?.profilePicture}`
+                : PF + "/person/noAvatar.png"
             }
             alt=""
           />
           <input
-            placeholder={"What's in your mind " + user.username + "?"}
+            placeholder={"What's in your mind " + user?.username + "?"}
             className="shareInput"
             ref={desc}
           />
@@ -67,13 +75,13 @@ export default function Share() {
         )}
         <form className="shareBottom" onSubmit={submitHandler}>
           <div className="shareOptions">
-            <label htmlFor="file" className="shareOption">
+            <label htmlFor="postFile" className="shareOption">
               <PermMedia htmlColor="orange" className="shareIcon" />
               <span className="shareOptionText">Photo or Video</span>
               <input
                 style={{ display: "none" }}
                 type="file"
-                id="file"
+                id="postFile"
                 accept=".png,.jpeg,.jpg"
                 onChange={(e) => setFile(e.target.files[0])}
               />

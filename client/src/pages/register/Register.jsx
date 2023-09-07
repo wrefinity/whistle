@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../../axiosBase";
 import { useRef } from "react";
 import "./register.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -21,7 +21,7 @@ export default function Register() {
         password: password.current.value,
       };
       try {
-        await axios.post("/auth/register", user);
+        await axiosInstance.post("/api/auth/register", user);
         navigate("/login"); // Use navigate instead of history.push
       } catch (err) {
         console.log(err);

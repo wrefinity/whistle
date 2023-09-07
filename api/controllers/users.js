@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 
 class UserController {
   updateUser = async (req, res) => {
-    if (req.body.userId === req.params.id || req.body.isAdmin) {
+    if (req.body._id === req.params.id || req.body.isAdmin) {
       if (req.body.password) {
         try {
           const salt = await bcrypt.genSalt(10)

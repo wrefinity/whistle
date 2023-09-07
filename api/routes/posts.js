@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import  AuthController from '../controllers/posts.js'
+import upload from '../multer.js'
 
 const router = Router()
 router.post('/', AuthController.createPost)
