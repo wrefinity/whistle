@@ -7,6 +7,7 @@ import {
   Bookmark,
   HelpOutline,
   WorkOutline,
+  SupervisedUserCircle,
   Event,
   School,
 } from "@mui/icons-material";
@@ -28,6 +29,12 @@ export default function Sidebar() {
             <li className="sidebarListItem">
               <Chat className="sidebarIcon" />
               <span className="sidebarListItemText">Chats</span>
+            </li>
+          </Link>
+          <Link to="/users">
+            <li className="sidebarListItem">
+              <SupervisedUserCircle className="sidebarIcon" />
+              <span className="sidebarListItemText">Users</span>
             </li>
           </Link>
           <Link to="/">

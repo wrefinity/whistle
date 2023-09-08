@@ -39,6 +39,15 @@ class UserController {
     }
   }
 
+  getAll = async (req, res) => {
+    try {
+      const users = await User.find({})
+      res.status(200).json(users)
+    } catch (err) {
+      res.status(500).json(err)
+    }
+  }
+
   getUser = async (req, res) => {
     const userId = req.query.userId
     const username = req.query.username
@@ -52,6 +61,7 @@ class UserController {
       res.status(500).json(err)
     }
   }
+
   getFriends = async (req, res) => {
     try {
       const user = await User.findById(req.params.userId)
@@ -70,6 +80,7 @@ class UserController {
       res.status(500).json(err)
     }
   }
+  
   followUser = async (req, res) => {
     if (req.body.userId !== req.params.id) {
       try {

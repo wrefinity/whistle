@@ -56,11 +56,13 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axiosInstance.get(`/api/users?username=${currentUser.username}`);
+      const res = await axiosInstance.get(`/api/users?username=${currentUser?.username}`);
       setUser(res.data);
     };
     fetchUser();
   }, [username]);
+
+  console.log(user)
 
   return (
     <>
@@ -88,6 +90,8 @@ export default function Profile() {
                 }
                 alt=""
               />
+              {username === currentUser.username && (
+                <>
               <form className="shareBottom p" onSubmit={submitHandler}>
           <div className="shareOptions">
             <label htmlFor="file" className="shareOption">
@@ -124,8 +128,9 @@ export default function Profile() {
           <button className="shareButton" type="submit">
             Upload cover
           </button>
-              </form>
-              
+                  </form>
+                  </>
+              )}              
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">{user.username}</h4>
